@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dapur Karir Banyumas - Petualangan Memilih Jurusan IX SMP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FFFBEB;
+            color: #451A03;
+        }
+        .font-game {
+            font-family: 'Fredoka', cursive;
+        }
+        .batik-bg {
+            background-color: #fef3c7;
+            background-image: radial-gradient(#d97706 0.75px, transparent 0.75px), radial-gradient(#d97706 0.75px, #fef3c7 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.95;
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(180, 83, 9, 0.2), 0 10px 10px -5px rgba(180, 83, 9, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #FEF3C7;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D97706;
+            border-radius: 10px;
+        }
+        @keyframes sizzle {
+            0%, 100% { transform: rotate(-1deg) scale(1); }
+            50% { transform: rotate(1deg) scale(1.03); }
+        }
+        .sizzle-animation {
+            animation: sizzle 0.6s infinite alternate ease-in-out;
+        }
+        canvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between batik-bg antialiased selection:bg-amber-300">
+
+    <!-- Header Navigation -->
+    <header class="bg-amber-900 text-amber-50 shadow-lg border-b-4 border-amber-600 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-amber-950 text-xl font-bold shadow-md">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <div>
+                    <h1 class="font-game text-xl md:text-2xl text-amber-300 leading-tight">DAPUR KARIR BANYUMAS</h1>
+                    <p class="text-xs text-amber-200">Layanan Bimbingan & Konseling (BK) Kelas IX SMP</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleAudio()" id="audioBtn" class="bg-amber-800 hover:bg-amber-700 text-amber-200 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 border border-amber-600 transition">
+                    <i class="fa-solid fa-volume-high" id="audioIcon"></i> <span id="audioTxt">Efek Suara: ON</span>
+                </button>
+                <button onclick="resetGame()" class="bg-red-700 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+                    <i class="fa-solid fa-rotate-left"></i> Ulangi
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto w-full p-4 flex-grow flex flex-col justify-center">
+
+        <!-- Progress Bar Indicator -->
+        <div id="progressContainer" class="mb-6 bg-white/80 backdrop-blur p-4 rounded-2xl shadow-sm border border-amber-200 hidden">
+            <div class="flex justify-between items-center text-xs font-bold text-amber-800 mb-2">
+                <span id="stepTitle">Langkah 1: Memilih Bahan Utama Minat</span>
+                <span id="stepCounter">Tahap 1 dari 4</span>
+            </div>
+            <div class="w-full bg-amber-100 h-3 rounded-full overflow-hidden border border-amber-300">
+                <div id="progressBar" class="bg-gradient-to-r from-amber-500 to-orange-500 h-full w-1/4 transition-all duration-500 ease-out rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 1: Welcome & Character Selection -->
+        <div id="screenWelcome" class="bg-white/90 backdrop-blur rounded-3xl p-6 md:p-10 shadow-2xl border-2 border-amber-300 text-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-amber-100 rounded-full blur-2xl opacity-70"></div>
+            <div class="relative z-10">
+                <span class="inline-block bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-300 mb-3">
+                    <i class="fa-solid fa-compass"></i> Eksplorasi Minat & Bakat Lulusan SMP
+                </span>
+                <h2 class="font-game text-3xl md:text-5xl text-amber-950 mb-3 leading-snug">
+                    Resep Sukses Karirmu,<br><span class="text-orange-600">Racikan Kuliner Banyumas!</span>
+                </h2>
+                <p class="text-amber-800 text-sm md:text-base max-w-2xl mx-auto mb-6">
+                    Bawor butuh bantuanmu! Pilih dan racik hidangan khas Banyumas yang paling menggambarkan potensi dirimu untuk menemukan **Jurusan SMA/SMK/MA** yang paling tepat!
+                </p>
+
+                <!-- Input Student Info -->
+                <div class="max-w-md mx-auto bg-amber-50 p-4 rounded-2xl border border-amber-200 mb-6 text-left shadow-inner">
+                    <label class="block text-xs font-bold text-amber-900 mb-1" for="studentName">Nama Lengkap Siswa:</label>
+                    <input type="text" id="studentName" placeholder="Masukkan namamu..." class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 mb-3 text-sm font-semibold text-amber-900">
+                    
+                    <label class="block text-xs font-bold text-amber-900 mb-1" for="studentClass">Kelas IX / Rombel:</label>
+                    <input type="text" id="studentClass" value="IX - SMP" class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm font-semibold text-amber-900">
+                </div>
+
+                <button onclick="startGame()" class="bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-game text-xl px-8 py-4 rounded-2xl shadow-lg hover:shadow-orange-500/30 card-hover transition transform active:scale-95 inline-flex items-center gap-3">
+                    <i class="fa-solid fa-fire"></i> Mulai Petualangan Resep Karir!
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: Stage 1 - Choice of Ingredients (Holland Codes / RIASEC concept via Food) -->
+        <div id="screenStage1" class="hidden bg-white/95 backdrop-blur rounded-3xl p-6 md:p-8 shadow-2xl border-2 border-amber-300">
+            <div class="text-center mb-6">
+                <span class="bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full border border-orange-300">Tahap 1: Pilih Menu Utama Minat</span>
+                <h3 class="font-game text-2xl md:text-3xl text-amber-950 mt-2">Mana Hidangan Banyumas yang Paling Bikin Kamu Semangat?</h3>
+                <p class="text-xs md:text-sm text-amber-700">Setiap kuliner menggambarkan gaya kerja & pemikiran impianmu!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="stage1Options">
+                <!-- Options will be dynamically populated -->
+            </div>
+        </div>
+
+        <!-- SCREEN 3: Stage 2 - Canvas Minigame (Goreng Mendoan Gaya Belajar) -->
+        <div id="screenStage2" class="hidden bg-white/95 backdrop-blur rounded-3xl p-6 shadow-2xl border-2 border-amber-300 text-center">
+            <div class="mb-4">
+                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-300">Tahap 2: Minigame "Goreng Mendoan Gaya Belajar"</span>
+                <h3 class="font-game text-2xl text-amber-950 mt-1">Goreng Mendoan Sesuai Kecepatan Gaya Belajarmu!</h3>
+                <p class="text-xs text-amber-700">Klik/Tap pada wajan saat mendoan matang sempurna (Tingkat Keemasan 80-100%)!</p>
+            </div>
+
+            <div class="relative max-w-md mx-auto bg-amber-900 rounded-2xl overflow-hidden shadow-inner p-2 border-4 border-amber-700">
+                <canvas id="mendoanCanvas" width="400" height="280" class="w-full h-auto rounded-xl cursor-pointer"></canvas>
+                <div class="mt-2 flex justify-between items-center px-4 py-2 bg-amber-950 text-amber-100 rounded-xl">
+                    <span class="text-xs font-semibold" id="mendoanStatus">Status: Siap Memasak...</span>
+                    <button id="cookBtn" onclick="handleMendoanClick()" class="bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-game px-4 py-1.5 rounded-lg text-sm shadow">
+                        ANGKAT MENDOAN!
+                    </button>
+                </div>
+            </div>
+
+            <div id="stage2Feedback" class="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-200 hidden">
+                <p class="text-xs md:text-sm font-bold text-amber-900" id="stage2Text"></p>
+                <button onclick="goToStage3()" class="mt-2 bg-amber-800 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-amber-900 transition">
+                    Lanjut ke Tahap 3: Racik Bumbu Keahlian <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: Stage 3 - Racikan Bumbu Keahlian (Skills & Aptitude) -->
+        <div id="screenStage3" class="hidden bg-white/95 backdrop-blur rounded-3xl p-6 md:p-8 shadow-2xl border-2 border-amber-300">
+            <div class="text-center mb-6">
+                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-300">Tahap 3: Racikan Bumbu Keahlian</span>
+                <h3 class="font-game text-2xl md:text-3xl text-amber-950 mt-2">Bumbu Tambahan Apa yang Paling Kamu Kuasai?</h3>
+                <p class="text-xs md:text-sm text-amber-700">Pilih dua bumbu utama yang menjadi kekuatan utama dirimu dalam belajar sehari-hari.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" id="stage3Options">
+                <!-- Skill chips will be populated -->
+            </div>
+
+            <div class="text-center">
+                <button id="btnFinishStage3" onclick="calculateResult()" disabled class="bg-gray-400 text-white font-game text-lg px-6 py-3 rounded-xl shadow transition cursor-not-allowed">
+                    Sajikan Rekomendasi Jurusan! <i class="fa-solid fa-bowl-food ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: Stage 4 - Result & Diagnostic Report Card -->
+        <div id="screenResult" class="hidden bg-white/95 backdrop-blur rounded-3xl p-6 md:p-8 shadow-2xl border-2 border-amber-400">
+            <div class="text-center pb-4 border-b border-amber-200 mb-6">
+                <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full border border-green-300 mb-2 inline-block">
+                    <i class="fa-solid fa-circle-check"></i> Hasil Analisis Layanan BK
+                </span>
+                <h2 class="font-game text-3xl md:text-4xl text-amber-950">Kartu Paspor Resep Karir Siswa</h2>
+                <p class="text-xs text-amber-700 mt-1">Dibuat khusus untuk <span id="resName" class="font-bold underline text-amber-900"></span> (<span id="resClass"></span>)</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Left Column: Culinary Identity Profile -->
+                <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-5 rounded-2xl border border-amber-200 text-center flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="w-20 h-20 bg-amber-500 rounded-full mx-auto flex items-center justify-center text-white text-3xl shadow-md mb-3" id="resCulinaryIcon">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-wider font-extrabold text-amber-600">Tipe Karir Kuliner</span>
+                        <h4 class="font-game text-xl text-amber-950 mt-1" id="resCulinaryTitle">Mendoan Fleksibel</h4>
+                        <p class="text-xs text-amber-800 mt-2 leading-relaxed" id="resCulinaryDesc"></p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-amber-200">
+                        <span class="text-xs font-bold text-amber-900 block">Gaya Belajar:</span>
+                        <span class="inline-block bg-amber-200 text-amber-900 text-xs font-semibold px-2.5 py-1 rounded-lg mt-1" id="resLearningStyle">Visual - Fleksibel</span>
+                    </div>
+                </div>
+
+                <!-- Middle & Right: Recommended Tracks (SMA / SMK / MA) -->
+                <div class="md:col-span-2 space-y-4">
+                    <h4 class="font-game text-xl text-amber-950 flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-orange-600"></i> Rekomendasi Pilihan Jurusan/Jenjang:
+                    </h4>
+
+                    <!-- Primary Recommendation -->
+                    <div class="bg-amber-950 text-amber-50 p-5 rounded-2xl shadow-md border-l-8 border-orange-500">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="bg-orange-500 text-white text-[10px] uppercase tracking-widest font-extrabold px-2 py-0.5 rounded">Pilihan Utamamu</span>
+                                <h5 class="font-game text-2xl text-amber-200 mt-1" id="resMainTrack">SMK - Rekayasa & Teknologi</h5>
+                            </div>
+                            <span class="text-2xl" id="resMainBadge">🛠️</span>
+                        </div>
+                        <p class="text-xs text-amber-100 mt-2 leading-relaxed" id="resMainDesc"></p>
+                        <div class="mt-3 bg-amber-900/80 p-2.5 rounded-xl border border-amber-800 text-xs text-amber-200">
+                            <strong>Contoh Program Keahlian:</strong> <span id="resMainExamples">Teknik Otomotif, Teknik Mesin, DKV</span>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Recommendation -->
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                        <div class="flex justify-between items-center">
+                            <h5 class="font-game text-base text-amber-950" id="resSecondaryTrack">Alternatif: SMA - Kelompok IPA / IPS</h5>
+                            <span class="text-xs font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded">Opsi Pendukung</span>
+                        </div>
+                        <p class="text-xs text-amber-800 mt-1" id="resSecondaryDesc"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Counseling Action Plan / BK Reflection Box -->
+            <div class="bg-white p-4 rounded-2xl border border-amber-300 shadow-inner mb-6">
+                <h5 class="font-game text-sm text-amber-950 flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-comments text-amber-700"></i> Catatan Refleksi & Tindak Lanjut Guru BK:
+                </h5>
+                <ul class="text-xs text-amber-800 space-y-1.5 list-disc list-inside">
+                    <li>Diskusikan hasil rekomendasi ini bersama <strong>Orang Tua / Wali</strong> di rumah.</li>
+                    <li>Konsultasikan lebih lanjut ke **Guru BK Sekolah** untuk pemetaan daya tampung sekolah tujuan.</li>
+                    <li>Tingkatkan prestasi belajar pada mata pelajaran pendukung jurusan utama pilihanmu.</li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-3 justify-center">
+                <button onclick="window.print()" class="bg-amber-800 hover:bg-amber-900 text-white font-game px-5 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-print"></i> Cetak / Simpan Paspor Karir (PDF)
+                </button>
+                <button onclick="resetGame()" class="bg-amber-100 hover:bg-amber-200 text-amber-950 font-game px-5 py-2.5 rounded-xl text-sm border border-amber-300 flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-left"></i> Coba Tes Lagi
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-amber-950 text-amber-400 py-3 text-center text-xs border-t border-amber-800">
+        <p>© 2026 Layanan Bimbingan Konseling (BK) SMP - Media E-Konseling Karir Khas Banyumas</p>
+    </footer>
+
+    <script>
+        // Audio Engine (Web Audio API Synthesizer - No external file dependencies)
+        let audioEnabled = true;
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioCtx();
+            }
+        }
+
+        function playSound(type) {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'sizzle') {
+                    // White noise effect for sizzling frying mendoan
+                    const bufferSize = audioCtx.sampleRate * 0.3;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const noiseGain = audioCtx.createGain();
+                    noiseGain.gain.setValueAtTime(0.15, now);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    noise.connect(noiseGain);
+                    noiseGain.connect(audioCtx.destination);
+                    noise.start(now);
+                } else if (type === 'win') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.setValueAtTime(400, now + 0.1);
+                    osc.frequency.setValueAtTime(600, now + 0.2);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                }
+            } catch (e) {
+                console.log('Audio init error:', e);
+            }
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            document.getElementById('audioTxt').innerText = audioEnabled ? 'Efek Suara: ON' : 'Efek Suara: OFF';
+            document.getElementById('audioIcon').className = audioEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+        }
+
+        // Data Questions & Mapping Engine
+        const stage1Data = [
+            {
+                id: 'mendoan',
+                title: 'Mendoan Anget Crisp & Versatile',
+                badge: 'Praktik & Teknik Direct',
+                icon: 'fa-layer-group',
+                desc: 'Suka bekerja cepat, melihat hasil langsung berbentuk karya nyata, utak-atik alat/mesin, atau kegiatan outdoor fisik.',
+                riasec: 'Realistic',
+                suggestedTrack: 'SMK - Rekayasa, Teknik & Teknologi (Otomotif, Mesin, Elektro, Konstruksi)'
+            },
+            {
+                id: 'soto',
+                title: 'Soto Sokaraja Racikan Kompleks',
+                badge: 'Riset, Sains & Logika',
+                icon: 'fa-flask',
+                desc: 'Suka menganalisis data, memecahkan rumus ilmiah, meneliti eksperimen, serta suka matematika & IPA mendalam.',
+                riasec: 'Investigative',
+                suggestedTrack: 'SMA - Kelompok IPA (Matematika & Sains Alam)'
+            },
+            {
+                id: 'getuk',
+                title: 'Getuk Goreng Manis & Kreatif',
+                badge: 'Seni, Budaya & Desain',
+                icon: 'fa-palette',
+                desc: 'Suka menggambar, mendesain, membuat konten digital, bermain musik, puisi, atau mengekspresikan ide seni unik.',
+                riasec: 'Artistic',
+                suggestedTrack: 'SMK - Desain Komunikasi Visual (DKV), Animasi, Seni Musik/Kriya ATAU SMA Bahasa & Budaya'
+            },
+            {
+                id: 'kraca',
+                title: 'Kraca (Tutut Bumbu Ndeso) Sosial',
+                badge: 'Pelayanan, Komunikasi & Keagamaan',
+                icon: 'fa-hand-holding-heart',
+                desc: 'Suka membantu orang lain, mengajar, berdiskusi kelompok, kegiatan sosial masyarakat, atau pendalaman agama.',
+                riasec: 'Social',
+                suggestedTrack: 'SMA IPS / MA (Madrasah Aliyah Keagamaan / IPS) / SMK Keperawatan & Sosial'
+            }
+        ];
+
+        const stage3Skills = [
+            { id: 'logika', title: 'Bumbu Hitung & Analisis Logika', icon: 'fa-calculator', category: 'IPA' },
+            { id: 'komunikasi', title: 'Bumbu Bicara & Bahasa', icon: 'fa-comments', category: 'IPS' },
+            { id: 'praktik', title: 'Bumbu Terampil Otomotif/Komputer', icon: 'fa-wrench', category: 'SMK-Teknik' },
+            { id: 'bisnis', title: 'Bumbu Jualan & Wirausaha', icon: 'fa-chart-line', category: 'SMK-Bisnis' },
+            { id: 'kuliner', title: 'Bumbu Tata Boga & Olah Masakan', icon: 'fa-utensils', category: 'SMK-Boga' },
+            { id: 'seni', title: 'Bumbu Gambar & Desain Visual', icon: 'fa-paint-brush', category: 'SMK-DKV' },
+            { id: 'agama', title: 'Bumbu Kajian Moral & Keagamaan', icon: 'fa-book-quran', category: 'MA' },
+            { id: 'sosial', title: 'Bumbu Kerja Sama Organisasi', icon: 'fa-users', category: 'IPS' }
+        ];
+
+        // Global State Variables
+        let state = {
+            studentName: '',
+            studentClass: '',
+            selectedStage1: null,
+            mendoanCookScore: 0,
+            learningStyle: '',
+            selectedSkills: []
+        };
+
+        function startGame() {
+            playSound('click');
+            const nameInput = document.getElementById('studentName').value.trim();
+            const classInput = document.getElementById('studentClass').value.trim();
+
+            if (!nameInput) {
+                alertCustom('Silakan isi nama lengkapmu terlebih dahulu ya!');
+                return;
+            }
+
+            state.studentName = nameInput;
+            state.studentClass = classInput || 'IX SMP';
+
+            document.getElementById('screenWelcome').classList.add('hidden');
+            document.getElementById('progressContainer').classList.remove('hidden');
+            document.getElementById('screenStage1').classList.remove('hidden');
+
+            renderStage1();
+            updateProgress(1, 'Memilih Menu Utama Minat');
+        }
+
+        function updateProgress(stepNum, titleText) {
+            document.getElementById('stepCounter').innerText = `Tahap ${stepNum} dari 4`;
+            document.getElementById('stepTitle').innerText = `Langkah ${stepNum}: ${titleText}`;
+            document.getElementById('progressBar').style.width = `${(stepNum / 4) * 100}%`;
+        }
+
+        function renderStage1() {
+            const container = document.getElementById('stage1Options');
+            container.innerHTML = '';
+
+            stage1Data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-amber-50 border-2 border-amber-200 hover:border-orange-500 rounded-2xl p-5 cursor-pointer card-hover flex flex-col justify-between';
+                card.onclick = () => selectStage1(item);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="bg-amber-200 text-amber-900 text-[11px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1">
+                                <i class="fa-solid ${item.icon}"></i> ${item.badge}
+                            </span>
+                        </div>
+                        <h4 class="font-game text-lg text-amber-950">${item.title}</h4>
+                        <p class="text-xs text-amber-800 mt-2 leading-relaxed">${item.desc}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-amber-200/60 flex items-center justify-end text-xs font-bold text-orange-600">
+                        Pilih Menu Ini <i class="fa-solid fa-circle-chevron-right ml-1"></i>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectStage1(item) {
+            playSound('click');
+            state.selectedStage1 = item;
+            
+            // Move to Stage 2 (Canvas game)
+            document.getElementById('screenStage1').classList.add('hidden');
+            document.getElementById('screenStage2').classList.remove('hidden');
+            updateProgress(2, 'Minigame Goreng Mendoan Gaya Belajar');
+            initCanvasMinigame();
+        }
+
+        let canvas, ctx;
+        let isCooking = false;
+        let cookProgress = 0; // 0 to 100
+        let cookInterval = null;
+        let hasCooked = false;
+
+        function initCanvasMinigame() {
+            canvas = document.getElementById('mendoanCanvas');
+            ctx = canvas.getContext('2d');
+            hasCooked = false;
+            cookProgress = 0;
+            document.getElementById('stage2Feedback').classList.add('hidden');
+            document.getElementById('mendoanStatus').innerText = 'Status: Tekan Tombol Untuk Mulai Goreng!';
+            document.getElementById('cookBtn').innerText = 'MULAI GORENG!';
+            drawMendoanCanvas(0);
+        }
+
+        function drawMendoanCanvas(progress) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Frying Pan / Wajan
+            ctx.fillStyle = '#1e1b4b'; // Dark metal pan inner
+            ctx.beginPath();
+            ctx.arc(200, 140, 120, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Oil layer
+            ctx.fillStyle = '#f59e0b'; // Golden oil
+            ctx.beginPath();
+            ctx.arc(200, 140, 110, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw Tempe Mendoan Batter
+            let tempeColor = '#fef3c7'; // raw flour batter
+            if (progress > 20 && progress <= 60) tempeColor = '#fde047'; // light yellow
+            else if (progress > 60 && progress <= 95) tempeColor = '#d97706'; // perfectly golden brown (Mendoan matang!)
+            else if (progress > 95) tempeColor = '#451a03'; // burnt!
+
+            ctx.save();
+            ctx.translate(200, 140);
+            ctx.rotate(-0.05);
+
+            // Mendoan body
+            ctx.fillStyle = tempeColor;
+            ctx.beginPath();
+            ctx.roundRect(-70, -45, 140, 90, 12);
+            ctx.fill();
+            ctx.strokeStyle = '#b45309';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Sliced spring onion bits (Daun Bawang khas Mendoan)
+            ctx.fillStyle = '#15803d';
+            ctx.beginPath(); ctx.arc(-30, -20, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(20, 15, 7, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(40, -10, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(-20, 25, 6, 0, Math.PI * 2); ctx.fill();
+
+            ctx.restore();
+
+            // Oil bubbles if cooking
+            if (isCooking) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                for (let i = 0; i < 8; i++) {
+                    const bx = 120 + Math.random() * 160;
+                    const by = 60 + Math.random() * 160;
+                    ctx.beginPath();
+                    ctx.arc(bx, by, Math.random() * 6 + 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // Temperature / Golden Gauge Bar
+            ctx.fillStyle = '#374151';
+            ctx.fillRect(40, 240, 320, 16);
+            ctx.fillStyle = progress > 95 ? '#ef4444' : (progress >= 70 ? '#22c55e' : '#f59e0b');
+            ctx.fillRect(40, 240, (320 * progress) / 100, 16);
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(40, 240, 320, 16);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 11px Plus Jakarta Sans';
+            ctx.fillText(`Tingkat Kematangan: ${Math.floor(progress)}%`, 140, 252);
+        }
+
+        function handleMendoanClick() {
+            if (!isCooking && !hasCooked) {
+                // Start Frying
+                playSound('sizzle');
+                isCooking = true;
+                document.getElementById('mendoanStatus').innerText = 'Status: Menggoreng... Angkat di momen pas!';
+                document.getElementById('cookBtn').innerText = 'ANGKAT SEKARANG!';
+
+                cookInterval = setInterval(() => {
+                    cookProgress += 2.5;
+                    playSound('sizzle');
+                    if (cookProgress >= 100) {
+                        finishMendoanCook();
+                    }
+                    drawMendoanCanvas(cookProgress);
+                }, 80);
+            } else if (isCooking && !hasCooked) {
+                // User pressed Angkat
+                finishMendoanCook();
+            }
+        }
+
+        function finishMendoanCook() {
+            clearInterval(cookInterval);
+            isCooking = false;
+            hasCooked = true;
+            state.mendoanCookScore = cookProgress;
+
+            let styleMsg = '';
+            if (cookProgress >= 65 && cookProgress <= 95) {
+                playSound('win');
+                state.learningStyle = 'Kinestetik-Praktis & Tepat Waktu (Suka Praktik Langsung & Responsif)';
+                styleMsg = '🔥 Mendoan Matang Sempurna! Kamu tipe pelajar **Kinestetik & Responsif**. Kamu paling cepat paham jika materi pelajaran langsung dipraktikkan!';
+            } else if (cookProgress < 65) {
+                playSound('click');
+                state.learningStyle = 'Visual-Analitis & Hati-Hati (Suka Observasi & Perencanaan Matang)';
+                styleMsg = '💡 Mendoan Setengah Matang (Mendo)! Kamu tipe pelajar **Visual & Reflektif**. Kamu suka mengamati detail terlebih dahulu sebelum bertindak.';
+            } else {
+                playSound('click');
+                state.learningStyle = 'Auditori-Eksploratif (Suka Tantangan & Diskusi Luas)';
+                styleMsg = '⚡ Mendoan Garing Renyah! Kamu tipe pelajar **Eksploratif & Berani**. Kamu tidak takut mencoba hal baru dan suka belajar lewat tantangan nyata!';
+            }
+
+            document.getElementById('mendoanStatus').innerText = 'Status: Selesai Digoreng!';
+            document.getElementById('stage2Text').innerHTML = styleMsg;
+            document.getElementById('stage2Feedback').classList.remove('hidden');
+            document.getElementById('cookBtn').disabled = true;
+            document.getElementById('cookBtn').classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        function goToStage3() {
+            playSound('click');
+            document.getElementById('screenStage2').classList.add('hidden');
+            document.getElementById('screenStage3').classList.remove('hidden');
+            updateProgress(3, 'Racikan Bumbu Keahlian');
+            renderStage3();
+        }
+
+        function renderStage3() {
+            const container = document.getElementById('stage3Options');
+            container.innerHTML = '';
+            state.selectedSkills = [];
+
+            stage3Skills.forEach(skill => {
+                const chip = document.createElement('div');
+                chip.className = 'bg-amber-50 border-2 border-amber-200 hover:border-amber-500 rounded-xl p-3 cursor-pointer text-center card-hover flex flex-col items-center justify-center gap-2 select-none';
+                chip.id = `skill-${skill.id}`;
+                chip.onclick = () => toggleSkill(skill);
+
+                chip.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center text-lg">
+                        <i class="fa-solid ${skill.icon}"></i>
+                    </div>
+                    <span class="text-xs font-bold text-amber-950">${skill.title}</span>
+                `;
+                container.appendChild(chip);
+            });
+        }
+
+        function toggleSkill(skill) {
+            playSound('click');
+            const idx = state.selectedSkills.findIndex(s => s.id === skill.id);
+            const element = document.getElementById(`skill-${skill.id}`);
+
+            if (idx > -1) {
+                state.selectedSkills.splice(idx, 1);
+                element.classList.remove('bg-orange-500', 'text-white', 'border-orange-600');
+                element.classList.add('bg-amber-50', 'text-amber-950', 'border-amber-200');
+            } else {
+                if (state.selectedSkills.length >= 2) {
+                    alertCustom('Pilih maksimal 2 bumbu keahlian utama ya!');
+                    return;
+                }
+                state.selectedSkills.push(skill);
+                element.classList.remove('bg-amber-50', 'text-amber-950', 'border-amber-200');
+                element.classList.add('bg-orange-500', 'text-white', 'border-orange-600');
+            }
+
+            const btn = document.getElementById('btnFinishStage3');
+            if (state.selectedSkills.length > 0) {
+                btn.disabled = false;
+                btn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                btn.classList.add('bg-gradient-to-r', 'from-orange-500', 'to-amber-600', 'hover:from-orange-600', 'hover:to-amber-700', 'card-hover');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('bg-gray-400', 'cursor-not-allowed');
+                btn.classList.remove('bg-gradient-to-r', 'from-orange-500', 'to-amber-600');
+            }
+        }
+
+        function calculateResult() {
+            playSound('win');
+            document.getElementById('screenStage3').classList.add('hidden');
+            document.getElementById('progressContainer').classList.add('hidden');
+            document.getElementById('screenResult').classList.remove('hidden');
+
+            document.getElementById('resName').innerText = state.studentName;
+            document.getElementById('resClass').innerText = state.studentClass;
+            document.getElementById('resLearningStyle').innerText = state.learningStyle;
+
+            const primaryItem = state.selectedStage1;
+            document.getElementById('resCulinaryTitle').innerText = primaryItem.title;
+            document.getElementById('resCulinaryDesc').innerText = primaryItem.desc;
+
+            // Generate Recommendation based on Stage 1 + Stage 3 Skill mapping
+            let mainTrack = '';
+            let mainDesc = '';
+            let mainExamples = '';
+            let secondaryTrack = '';
+            let secondaryDesc = '';
+            let badgeIcon = '🎓';
+
+            const skillCategories = state.selectedSkills.map(s => s.category);
+
+            if (primaryItem.id === 'mendoan') {
+                badgeIcon = '⚙️';
+                mainTrack = 'SMK - Bidang Rekayasa, Teknik & Teknologi';
+                mainDesc = 'Sifat Mendoan yang fleksibel dan gurih sangat cocok dengan keahlian praktis. Kamu berpotensi besar sukses di SMK kejuruan teknis karena menyukai pembelajaran berbasis proyek nyata.';
+                mainExamples = 'Teknik Otomotif (Pengelasan/Kelistrikan), Teknik Mesin, Teknik Komputer & Jaringan (TKJ), atau Konstruksi.';
+                secondaryTrack = 'SMA - Kelompok IPA';
+                secondaryDesc = 'Jika ingin melanjutkan ke perkuliahan Teknik S1, SMA IPA menjadi pilihan fondasi teori sains yang kuat.';
+            } else if (primaryItem.id === 'soto') {
+                badgeIcon = '🔬';
+                mainTrack = 'SMA - Kelompok IPA (Sains & Matematika)';
+                mainDesc = 'Racikan Soto Sokaraja yang penuh ketelitian mencerminkan daya analitis & pemikiran metodis milikmu. Kamu cocok masuk SMA jurusan IPA untuk persiapan ke bangku kuliah Kesehatan/Teknik/MIPA.';
+                mainExamples = 'Mata Pelajaran Unggulan: Fisika, Kimia, Biologi, Matematika Lanjut.';
+                secondaryTrack = 'SMK - Bidang Kesehatan & Farmasi / IT';
+                secondaryDesc = 'Alternatif kejuruan yang membutuhkan ketelitian riset seperti Keperawatan, Rekayasa Perangkat Lunak, atau Farmasi.';
+            } else if (primaryItem.id === 'getuk') {
+                badgeIcon = '🎨';
+                mainTrack = 'SMK - Bidang Seni, Ekraf & DKV (Desain Komunikasi Visual)';
+                mainDesc = 'Keunikan Getuk Goreng Sokaraja yang manis & khas menggambarkan jiwa kreatifmu! Kamu cocok mengasah bakat seni visual, animasi, tata boga, atau media digital di SMK.';
+                mainExamples = 'Desain Komunikasi Visual (DKV), Animasi, Seni Kriya, Pariwisata, atau Tata Boga.';
+                secondaryTrack = 'SMA - Kelompok Bahasa & Budaya / IPS';
+                secondaryDesc = 'Jalur SMA bagi yang ingin mendalami sastra, bahasa asing, ilmu komunikasi, dan kebudayaan.';
+            } else { // Kraca
+                badgeIcon = '🤝';
+                if (skillCategories.includes('MA') || skillCategories.includes('IPS')) {
+                    mainTrack = 'MA (Madrasah Aliyah) / SMA - Kelompok IPS';
+                    mainDesc = 'Kraca khas dengan bumbu hangat melambangkan kepedulian sosial & keagamaan yang kuat. Kamu sangat berbakat dalam bidang keorganisasian, hukum, sosial, dan nilai religius.';
+                    mainExamples = 'Ilmu-ilmu Social (Sosiologi, Geografi, Ekonomi) atau Jurusan Keagamaan Islam di MA.';
+                    secondaryTrack = 'SMK - Bidang Manajemen Bisnis & Pekerjaan Sosial';
+                    secondaryDesc = 'Keahlian terapan di bidang Administrasi Perkantoran, Layanan Perbankan, atau Pekerjaan Sosial.';
+                } else {
+                    mainTrack = 'SMK - Bidang Bisnis, Pariwisata & Layanan Jasa';
+                    mainDesc = 'Kamu memiliki orientasi pelayanan dan komunikasi sosial yang ramah. SMK Bisnis & Pariwisata akan mengasah kemampuan wirausahamu secara cepat.';
+                    mainExamples = 'Pemasaran Digital, Otomatisasi Tata Kelola Perkantoran, Perhotelan & Layanan Wisata.';
+                    secondaryTrack = 'SMA - Kelompok IPS';
+                    secondaryDesc = 'Pilihan akademis untuk melanjut kuliah ke Manajemen, Hukum, atau Hubungan Internasional.';
+                }
+            }
+
+            document.getElementById('resMainBadge').innerText = badgeIcon;
+            document.getElementById('resMainTrack').innerText = mainTrack;
+            document.getElementById('resMainDesc').innerText = mainDesc;
+            document.getElementById('resMainExamples').innerText = mainExamples;
+            document.getElementById('resSecondaryTrack').innerText = secondaryTrack;
+            document.getElementById('resSecondaryDesc').innerText = secondaryDesc;
+        }
+
+        // Custom Modal Alert replacement (No window.alert)
+        function alertCustom(msg) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl border-2 border-amber-400">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <h4 class="font-game text-xl text-amber-950 mb-2">Pemberitahuan</h4>
+                    <p class="text-xs text-amber-800 mb-5">${msg}</p>
+                    <button onclick="this.parentElement.parentElement.remove()" class="bg-amber-800 hover:bg-amber-900 text-white font-game px-6 py-2 rounded-xl text-sm w-full">
+                        Mengerti
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function resetGame() {
+            playSound('click');
+            state = {
+                studentName: '',
+                studentClass: '',
+                selectedStage1: null,
+                mendoanCookScore: 0,
+                learningStyle: '',
+                selectedSkills: []
+            };
+            document.getElementById('screenResult').classList.add('hidden');
+            document.getElementById('screenStage1').classList.add('hidden');
+            document.getElementById('screenStage2').classList.add('hidden');
+            document.getElementById('screenStage3').classList.add('hidden');
+            document.getElementById('progressContainer').classList.add('hidden');
+            document.getElementById('screenWelcome').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
